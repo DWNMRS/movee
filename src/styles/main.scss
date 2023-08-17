@@ -1,0 +1,81 @@
+@import 'fonts';
+@import 'common';
+@import 'reset';
+
+.app-name {
+  margin-bottom: 50px;
+  font-family: "Blogger Sans Bold", sans-serif;
+  font-size: 32px;
+}
+
+h1,.h1{
+  font-weight: 300;
+  font-size: 60px;
+
+  @include break-lg {
+    font-size: 52px;
+  }
+}
+
+
+h2,.h2 {
+  font-weight: 300;
+  font-size: 40px;
+
+  @include break-lg {
+    font-size: 24px;
+    line-height: 32px;
+  }
+}
+
+h3, .h3 {
+  font-weight: 300;
+  font-size: 30px;
+
+  @include break-lg {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}
+
+h4, .h4 {
+  font-weight: 300;
+  font-size: 20px;
+}
+
+p,.p {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+h1,.h1,p,.p+* {
+  margin-bottom: 10px;
+}
+h2,.h2+* {
+  margin-bottom: 50px;
+}
+h3,.h3+* {
+  margin-bottom: 40px;
+}
+h4+*,
+h5+*,
+h6+*,
+ul+*,
+li+* {
+  margin-bottom: 10px;
+}
+
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+
+
