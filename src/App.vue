@@ -9,7 +9,7 @@
 <script setup lang="ts">
 
 import TheSidebar from "@/components/TheSidebar.vue";
-import AppIconSprite from "@/assets/icons/AppIconSprite.vue"
+import AppIconSprite from "@/assets/icons/AppIconSprite/AppIconSprite.vue"
 import { watch } from "vue";
 import router from "./router/router";
 import { register } from 'swiper/element/bundle';

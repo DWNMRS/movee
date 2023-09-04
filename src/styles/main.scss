@@ -6,6 +6,9 @@
   margin-bottom: 50px;
   font-family: "Blogger Sans Bold", sans-serif;
   font-size: 32px;
+  @include break-xl {
+    margin: 0;
+  }
 }
 
 h1,.h1{

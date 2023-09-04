@@ -1,3 +1,3 @@
 export enum EIconNames {
-  Search = 'Search',
+  Search = "Search",
 }

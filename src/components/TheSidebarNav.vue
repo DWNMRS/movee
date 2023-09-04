@@ -24,7 +24,7 @@ const sidebarItems: ISidebarItem[] = [
     title: "Мои Фильмы",
   },
   {
-    path: "/about",
+    path: "/",
     title: 'О приложении',
   },
 
@@ -56,6 +56,25 @@ const sidebarItems: ISidebarItem[] = [
     &:hover {
       background-color: #FFFFFF26;
     }
+  }
+
+  @include break-xl {
+    flex-direction: row;
+    width: auto;
+
+    &-item {
+      width: auto;
+      padding: 0;
+
+    &+& {
+      margin-top: 0;
+      margin-left: 20px;
+    }
+
+    &:hover {
+      background-color: #FFFFFF26;
+    }
+  }
   }
 }
 </style>

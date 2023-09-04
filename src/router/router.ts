@@ -6,7 +6,7 @@ import PageFavourite from "@/pages/PageFavourite.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/about",
+    path: "/",
     name:'PageAbout',
     component: PageAbout,
     meta:{

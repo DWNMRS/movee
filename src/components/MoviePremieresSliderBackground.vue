@@ -1,33 +1,56 @@
 <template>
   <div class="slider-wrapper--background">
-    <div class="slider__slide" v-for="(slide, index) of movieInfo.images[activeMovieId]" :key="index">
-      <div class="slider__slide-img" :class="{ slide: true, active: index === currentSlideIndex }"
-        :style="{ backgroundImage: `url(${x})` }" :alt="`кадр из фильма '${activeMovie?.nameRu}'`"></div>
+    <div class="slider__slide" v-for="(path, index) of curentImages" :key="index"
+      :class="{ active: index === currentSlideIndex }">
+      <img width="1920" height="1080" :src="path" :alt="`кадр из фильма '${movieName}'`">
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue';
-import { useMovieInfo } from '@/stores/MovieInfoStore'
-const movieInfo = useMovieInfo()
 
-let currentSlideIndex = ref(0);
-let x = ref<string>('')
-const activeMovieId = ref<number>(0)
-const activeMovie = computed(() => {
-  if (activeMovieId.value === null) {
-    return null
+const props = defineProps({
+  imagePaths: {
+    type: Array as () => string[],
+    default: []
+  },
+  movieName: {
+    type: String,
+    required: true,
+    default: ''
   }
-  return movieInfo.movies.find((movie) => {
-    return movie.kinopoiskId === activeMovieId.value
-  })
+})
+
+onMounted(() => {
+  startAutoPlay()
+})
+
+const startAutoPlay = () => {
+  setInterval(() => {
+    nextSlide();
+  }, 4000);
+};
+
+
+const currentSlideIndex = ref<number>(0);
+
+const curentImages = computed(() => {
+  const currentImagesLinks = props.imagePaths
+  if (currentImagesLinks.length === 0) {
+    currentSlideIndex.value = 0
+    return []
+  }
+  return (currentImagesLinks.slice(0, currentSlideIndex.value + 2));
 })
 
 const nextSlide = () => {
-  currentSlideIndex.value = (currentSlideIndex.value + 1);
-  x.value = movieInfo.images[activeMovieId.value][currentSlideIndex.value];
+  if (curentImages.value.length === 0) {
+    currentSlideIndex.value = 0
+  }
+  currentSlideIndex.value = (currentSlideIndex.value + 1) % props.imagePaths.length;
 };
+
 </script>
 
 <style scoped lang="scss">
@@ -39,27 +62,24 @@ const nextSlide = () => {
   right: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.6;
-  transition: opacity 0.5s ease-in-out;
+  opacity: 0.5;
 
-  .slider {
+  .slider__slide {
+    position: absolute;
     width: 100%;
     height: 100%;
+    opacity: 0;
+    transition: opacity 2.0s;
 
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
 
-    &__slide {
-      flex: 0 0 100%;
-      opacity: 0;
-      position: absolute;
-      transition: opacity 0.5s ease-in-out;
-
-      &-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+    &.active {
+      opacity: 1;
     }
   }
-
 }
 </style>

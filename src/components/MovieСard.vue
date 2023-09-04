@@ -1,26 +1,26 @@
 <template>
   <div :class="classes">
-    <img class="movie-card__img" :src="movie.posterUrl" :alt="movie.nameRu" />
+    <div class="movie-card__img-wrapper">
+      <img class="movie-card__img" :src="movie.posterUrl" :alt="movie.nameRu" :width="406" :height="611" />
+    </div>
     <div class="movie-card__info">
-      <div class="movie-card__info-name">
+      <h2 class="movie-card__info-name">
         {{ movie.nameRu }}
-      </div>
+      </h2>
       <div class="movie-card__info-basic">
-        <div class="movie-card__info-basic__item">
+        <span class="movie-card__info-basic__item">
           {{ movie.year }}
-        </div>
+        </span>
         <div class="movie-card__info-basic__item">
           <span class="movie-card__info-basic__item-country" v-for="(country, index) in movie.countries" :key="index">
             {{ country.country }}
           </span>
         </div>
-        <div v-if="movie.filmLength" class="movie-card__info-basic__item">
-          <span>{{ movie.filmLength }} минут</span>
-        </div>
-        <div class="movie-card__info-basic__item">
-          <span v-if="movie.type === 'FILM'">Фильм</span>
-          <span v-if="movie.type === 'SERIAL'">Сериал</span>
-        </div>
+        <span v-if="movie.filmLength" class="movie-card__info-basic__item">
+          {{ movie.filmLength }} минут
+        </span>
+        <span class="movie-card__info-basic__item" v-if="movie.type === 'FILM'">Фильм</span>
+        <span class="movie-card__info-basic__item" v-if="movie.type === 'SERIAL'">Сериал</span>
       </div>
       <div class="movie-card__info-basic">
         <div class="movie-card__info-basic__item">
@@ -29,7 +29,7 @@
           </span>
         </div>
       </div>
-      <span class="movie-card__info-description">{{ movie.description }}</span>
+      <p class="movie-card__info-description">{{ movie.description }}</p>
       <!-- <div class="movie-card__buttons">
         <button class="btn movie-card__button---watched" @click="movieStore.toggleWatch(movie.filmId)">
           <span v-if="!movie.isWatched">Watched</span>
@@ -76,7 +76,7 @@ const classes = computed(() => {
 
   display: grid;
   grid-template-columns: 230px 1fr;
-  column-gap: 30px;
+  column-gap: 40px;
   padding: 60px;
   border-radius: 10px;
   background-color: $dark;
@@ -136,35 +136,51 @@ const classes = computed(() => {
   }
 
   &--special {
-    display: grid;
-    grid-template-columns: 400px 1fr;
+    display: flex;
+    width: 100%;
     background-color: $transparent;
     padding: 0;
+    z-index: 2;
+
 
     & .movie-card {
       &__img {
-        width: 400px;
-        height: 600px;
+        width: 100%;
+        height: auto;
+        display: block;
         box-shadow: 0px 15px 30px 0px rgba(0, 0, 0, 0.2);
+
+        &-wrapper {
+          width: 100%;
+          max-width: 406px;
+          min-width: 258px;
+        }
       }
 
       &__info {
+        min-width: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+
         &-name {
           display: flex;
           align-items: center;
           font-weight: 300;
           font-size: 60px;
           margin-bottom: 20px;
-          color: $text-secondary;
+          color: $white;
         }
 
         &-description {
           display: block;
+          width: 100%;
+          max-width: 600px;
           margin-bottom: 20px;
           font-weight: 300;
           font-size: 16px;
           line-height: 24px;
-          color: $text-tertiary;
+          color: $white;
         }
 
         &-basic {
@@ -174,7 +190,7 @@ const classes = computed(() => {
           &__item {
             font-weight: 300;
             font-size: 16px;
-            color: $text-tertiary;
+            color: $white;
 
             &-country {
               &+& {
@@ -190,6 +206,10 @@ const classes = computed(() => {
           }
         }
       }
+    }
+
+    @include break-xl {
+      column-gap: 30px;
     }
   }
 }

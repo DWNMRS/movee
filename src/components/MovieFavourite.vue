@@ -1,7 +1,7 @@
 <template>
   <div class="moviesPage">
     <h2>My Favorite Movies</h2>
-    <div class="tabs">
+    <!-- <div class="tabs">
       <button :class="['btn', { btn_green: movieStore.activeTab === 1 }]" @click="setTab(1)">
         Favorite
       </button>
@@ -19,10 +19,10 @@
         <MovieCard v-for="movie of movieStore.watchedMovies" :key="movie.filmId" :movie="movie" />
       </div>
 
-    </div>
-    <div class="search" v-else>
+    </div> -->
+    <!-- <div class="search" v-else>
       awdawdadad
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -41,7 +41,6 @@ const setTab = (id: number) => {
 
 
 <style lang="scss" scoped>
-
 .btn {
   border: none;
   width: 100px;

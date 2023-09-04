@@ -4,26 +4,24 @@
   </svg>
 </template>
 
-<script setup lang='ts'>
-import { EIconNames } from './types';
+<script setup lang="ts">
+import { computed } from 'vue'
+import { EIconNames } from './types'
 
 const props = defineProps({
   width: {
     required: true,
-    type: [Number, String]
+    type: [Number, String],
   },
-
   height: {
     required: true,
-    type: [Number, String]
+    type: [Number, String],
   },
-
   name: {
     required: true,
-    type: String as () => EIconNames
+    type: String as () => EIconNames,
   },
-  createXlinkHref(): string {
-    return `#${this.name}_icon`
-  }
 })
+
+const createXlinkHref = computed(() => `#${props.name}_icon`)
 </script>

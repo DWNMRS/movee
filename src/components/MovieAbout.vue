@@ -18,6 +18,8 @@
 <style scoped lang="scss">
 .movie {
   &-about {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
