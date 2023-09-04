@@ -45,9 +45,9 @@
 
 <script setup lang="ts">
 import { PropType, computed } from 'vue';
-import { useMovieStore } from '@/stores/MovieStore';
+// import { useMovieStore } from '@/stores/MovieStore';
 import { IMovie } from '@/interfaces/movies'
-const movieStore = useMovieStore()
+// const movieStore = useMovieStore()
 
 const props = defineProps({
   movie: {

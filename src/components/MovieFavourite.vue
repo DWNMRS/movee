@@ -29,13 +29,13 @@
 
 <script setup lang="ts">
 
-import { useMovieStore } from '@/stores/MovieStore';
-import MovieCard from './MovieСard.vue';
+// import { useMovieStore } from '@/stores/MovieStore';
+// import MovieCard from './MovieСard.vue';
 
-const movieStore = useMovieStore();
-const setTab = (id: number) => {
-  movieStore.setActiveTab(id)
-}
+// const movieStore = useMovieStore();
+// const setTab = (id: number) => {
+//   movieStore.setActiveTab(id)
+// }
 
 </script>
 
