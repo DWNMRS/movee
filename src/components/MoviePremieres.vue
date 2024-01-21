@@ -7,43 +7,55 @@
     </Transition>
 
     <div class="slider-wrapper--side">
-      <Swiper class="slider" v-if="isSwiperInitialized" @active-index-change="getInformation" :modules="modules" :autoplay="{delay:15000}"
-        :direction="'vertical'" :slides-per-group="1" :slides-per-view="3.5" :pagination="swiperModulesOptions.pagination"
-        :mousewheel="swiperModulesOptions.mousewheel" :space-between="40" :watch-overflow="false" :auto-height="true"
-        :centered-slides="true" :loop="true" :slide-to-clicked-slide="true" :speed="1000">
-        <SwiperSlide class="slider__slide" v-for="premiere of premiereStore.movies" :key="premiere.kinopoiskId">
-          <img class="slider__slide-img" :src="premiere.posterUrlPreview"
+      <Swiper v-if="isSwiperInitialized" @active-index-change="getInformation" 
+        :slide-to-clicked-slide="swiperOptions.slideToClickedSlide"
+        :centered-slides="swiperOptions.centeredSlides" 
+        :slides-per-view="swiperOptions.slidesPerView"
+        :watch-overflow="swiperOptions.watchOverflow"
+        :space-between="swiperOptions.spaceBetween" 
+        :breakpoints="swiperOptions.breakpoints"
+        :auto-height="swiperOptions.autoHeight" 
+        :pagination="swiperOptions.pagination"
+        :mousewheel="swiperOptions.mousewheel"
+        :direction="swiperOptions.direction" 
+        :autoplay="swiperOptions.autoplay"
+        :speed="swiperOptions.speed" 
+        :loop="swiperOptions.loop" 
+        :modules="modules">
+
+        <SwiperSlide v-for="premiere of premiereStore.movies" :key="premiere.kinopoiskId">
+          <img class="swiper-slide__img" :src="premiere.posterUrlPreview"
             :alt="`постер из фильма '${activeMovie?.nameRu}'`">
         </SwiperSlide>
+
       </Swiper>
     </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed } from 'vue'
 
-// STORES
-import { usePremiereStore } from '@/stores/PremiereStore';
+import { usePremiereStore } from '@/stores/PremiereStore'
 import { useMovieInfo } from '@/stores/MovieInfoStore'
 const premiereStore = usePremiereStore()
 const movieInfo = useMovieInfo()
 
-// COMPONENTS
 import MovieCard from './MovieСard.vue';
 import MoviePremieresSliderBackground from './MoviePremieresSliderBackground.vue'
 
-// SWIPER
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Autoplay, Mousewheel, Pagination } from 'swiper/modules'
-const modules = [Autoplay, Mousewheel, Pagination]
+import SwiperInstance from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Autoplay, Mousewheel, Pagination, Controller } from 'swiper/modules'
+import { SwiperOptions } from 'swiper/types';
+const modules = [Autoplay, Mousewheel, Pagination, Controller]
 
-// SWIPER STYLES
 import 'swiper/scss';
 import 'swiper/scss/pagination';
 import 'swiper/scss/mousewheel';
 import 'swiper/scss/autoplay';
-
+import 'swiper/scss/effect-fade'
 
 onMounted(() => {
   if (premiereStore.movies.length === 0) {
@@ -55,21 +67,60 @@ onMounted(() => {
   }
 })
 
-const isSwiperInitialized = ref(false);
+const isSwiperInitialized = ref<boolean>(false);
 const initializeSwiper = () => {
   isSwiperInitialized.value = true;
 };
 
-const swiperModulesOptions = {
+
+
+const swiperOptions: SwiperOptions = {
+  loop: true,
+  speed: 500,
   autoplay: {
-    delay: 20000,
+    delay: 1000000,
     disableOnInteraction: false,
   },
   mousewheel: {
     invert: false,
   },
+  centeredSlides: true,
+  watchOverflow: true,
+  slideToClickedSlide: true,
+  direction: "vertical",
+  slidesPerView: "auto",
+  slidesPerGroup: 1,
+  spaceBetween: 40,
+  autoHeight: false,
   pagination: {
-    clickable: true,
+    enabled: false,
+    clickable: false,
+  },
+
+  breakpoints: {
+    320: {
+      slidesPerView: "auto",
+      direction: "horizontal",
+      pagination: {
+        enabled: false,
+        clickable: false,
+      },
+    },
+    1024: {
+      direction: "vertical",
+      spaceBetween: 30,
+      slideToClickedSlide: true,
+      pagination: {
+        enabled: true,
+        clickable: true,
+      },
+    },
+    1280: {
+      pagination: {
+        enabled: true,
+        clickable: true,
+      },
+    },
   }
 }
 
@@ -84,7 +135,7 @@ const activeMovie = computed(() => {
 })
 
 
-function getInformation(swiperInstance: any) {
+function getInformation(swiperInstance: SwiperInstance) {
   activeMovieId.value = premiereStore.movies[swiperInstance.realIndex].kinopoiskId
   if (!movieInfo.movies.map(movie => movie.kinopoiskId).includes(activeMovieId.value)) {
     movieInfo.getMovieInfo(activeMovieId.value)
@@ -93,18 +144,28 @@ function getInformation(swiperInstance: any) {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .movie-premieres {
-  display: flex;
-  margin-right: 200px;
-
-  .h1 {
-    z-index: 2;
+  @include break-xl {
+    height: calc(100% - 104px);
   }
 
-  &__movie-info {
-    width: 100%;
-    position: relative;
+  @include break-lg {
+    display: flex;
+    align-items: center;
+    height: calc(100% - 88px);
+  }
+
+  @include break-md {
+    height: calc(100% - 72px);
+  }
+
+  @include break-sm {
+    height: calc(100% - 40px);
+    justify-content: center;
+  }
+
+  .h1 {
     z-index: 2;
   }
 }
@@ -119,19 +180,71 @@ function getInformation(swiperInstance: any) {
   padding-right: 8px;
 
   @include break-xl {
-    height: calc(100vh - 80px);
+    width: 180px;
   }
 
-  .slider {
-    height: inherit;
+  @include break-lg {
+    top: auto;
+    bottom: 40px;
+    width: 100%;
+    height: 160px;
+    padding-right: 0;
+  }
 
-    &__slide {
-      width: 158px;
+  @include break-md {
+    bottom: 32px;
+  }
 
-      &-img {
-        width: 158px;
-        height: 227px;
+  @include break-sm {
+    bottom: 16px;
+  }
+
+  .swiper {
+    height: 100%;
+
+    &-wrapper {
+      width: 160px;
+
+      @include break-xl {
+        width: 140px
       }
+    }
+
+    &-slide {
+      width: 100%;
+      height: 234px;
+      background-color: #000000;
+      transition: opacity 2s;
+      border-radius: 6px;
+      overflow: hidden;
+
+      @include break-xl {
+        height: 204px;
+      }
+
+      @include break-lg {
+        width: auto;
+        height: 160px;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        transition: 1s;
+      }
+
+      &-active {
+        opacity: 1;
+
+        img {
+          opacity: 1;
+        }
+      }
+    }
+
+    &-pagination-bullet {
+      background: #00FFFF;
     }
   }
 }

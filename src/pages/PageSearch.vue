@@ -7,5 +7,6 @@
 <script setup lang='ts'>
 import TheContainer from '@/components/TheContainer.vue'
 import MovieSearch from '@/components/MovieSearch.vue';
-const titlePage = 'Поиск'
+
+const titlePage:string = 'Поиск'
 </script>

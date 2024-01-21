@@ -1,10 +1,7 @@
 <template>
   <div class="container">
     <h1 class="h1">{{ props.titlePage }}</h1>
-    <div class="container__page">
-      <slot />
-    </div>
-
+    <slot />
   </div>
 </template>
 
@@ -14,34 +11,43 @@ const props = defineProps({
   titlePage: {
     type: String,
     required: true,
-    default: 'Page'
+    default: ''
   }
-
 })
 </script>
 
 <style scoped lang='scss'>
 .container {
   position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin-left: 200px;
+  padding: 80px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  width: calc(100% - 190px);
-  margin-left: 190px;
-  padding: 100px;
 
-  &__page {
-    height: 100%;
-    display: flex;
-    align-items: center;
+  @include break-xxl {
+    padding: 56px;
   }
 
   @include break-xl {
-    width: 100%;
     margin-left: 0;
     margin-top: 80px;
-    height: calc(100vh - 80px);
+    padding: 48px;
+  }
+
+  @include break-lg {
     padding: 40px;
+  }
+
+  @include break-md {
+    padding: 32px;
+  }
+
+  @include break-sm {
+    margin-top: 60px;
+    padding: 16px;
+
   }
 
   .h1 {

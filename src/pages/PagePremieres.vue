@@ -8,6 +8,32 @@
 import TheContainer from '@/components/TheContainer.vue'
 import MoviePremieres from '@/components/MoviePremieres.vue'
 
-const titlePage = 'Премьеры'
+const titlePage: string = 'Премьеры'
 
 </script>
+
+<style scoped lang="scss">
+.container {
+  padding-right: 264px;
+
+  @include break-xl {
+    padding-right: 228px;
+    height: calc(100vh - 80px);
+  }
+
+  @include break-lg {
+    padding-right: 40px;
+    padding-bottom: 240px;
+  }
+
+  @include break-md {
+    padding-right: 32px;
+    padding-bottom: 224px;
+  }
+
+  @include break-sm {
+    padding-right: 16px;
+    height: calc(100vh - 60px);
+  }
+}
+</style>

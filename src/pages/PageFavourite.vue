@@ -8,5 +8,5 @@
 import MovieFavourite from '@/components/MovieFavourite.vue'
 import TheContainer from '@/components/TheContainer.vue'
 
-const titlePage = 'Мои фильмы'
+const titlePage:string = 'Мои фильмы'
 </script>

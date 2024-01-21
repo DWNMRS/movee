@@ -4,6 +4,11 @@ import { IMovieInfo } from "@/interfaces/movies";
 const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films/`;
 const status = "";
 
+interface ImageItem {
+  imageUrl: string;
+  previewUrl:string;
+}
+
 export const useMovieInfo = defineStore("movieInfo", {
   state: (): IMovieInfo => ({
     status: "",
@@ -43,7 +48,7 @@ export const useMovieInfo = defineStore("movieInfo", {
       if (res.status >= 200 && res.status < 400) {
         this.status = "success";
         const data = await res.json();
-        let imagesMovie = data.items.map((item:any) => {
+        let imagesMovie = data.items.map((item:ImageItem) => {
           return item.imageUrl;
         });
         if (!this.images[activeMovieId]) {

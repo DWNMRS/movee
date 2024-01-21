@@ -7,8 +7,8 @@ const status = "";
 
 export const useSearchStore = defineStore("searchStore", {
   state: (): IMovieSearch => ({
-    status: "",
     movies: [],
+    status: ""
   }),
   actions: {
     async getMovies(search: string) {

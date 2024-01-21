@@ -1,10 +1,22 @@
 <template>
   <div :class="classes">
     <div class="movie-card__img-wrapper">
-      <img class="movie-card__img" :src="movie.posterUrl" :alt="movie.nameRu" :width="406" :height="611" />
+      <button class='movie-card__bookmark' @click="favouriteStore.toggleFavourite(movie)">
+        <AppIcon :class="['movie-card__bookmark-icon', { 'movie-card__bookmark-icon--active': bookmark === true }]"
+          :width="32" :height="32" :name="EIconNames.Bookmark" />
+      </button>
+
+      <img class="movie-card__img" :src="movie.posterUrl" :alt="movie.nameRu" @click="openMovieInfo" />
+      <div v-if="!isSpecial" class="movie-card__buttons">
+        <button :class="['movie-card__button', { 'movie-card__button--watched': movie.isWatched === true }]"
+          @click="favouriteStore.toggleWatch(movie.kinopoiskId)">
+          <span v-if="!movie.isWatched">Не просмотренно</span>
+          <span v-else>Просмотренно</span>
+        </button>
+      </div>
     </div>
-    <div class="movie-card__info">
-      <h2 class="movie-card__info-name">
+    <div :class="['movie-card__info', { 'movie-card__info--visible': isHidden === false }]" @click="closeMovieInfo">
+      <h2 :class="['h2', { 'movie-card__info-name': !isSpecial }]">
         {{ movie.nameRu }}
       </h2>
       <div class="movie-card__info-basic">
@@ -17,7 +29,7 @@
           </span>
         </div>
         <span v-if="movie.filmLength" class="movie-card__info-basic__item">
-          {{ movie.filmLength }} минут
+          {{ formatMinutes(movie.filmLength) }}
         </span>
         <span class="movie-card__info-basic__item" v-if="movie.type === 'FILM'">Фильм</span>
         <span class="movie-card__info-basic__item" v-if="movie.type === 'SERIAL'">Сериал</span>
@@ -29,25 +41,21 @@
           </span>
         </div>
       </div>
-      <p class="movie-card__info-description">{{ movie.description }}</p>
-      <!-- <div class="movie-card__buttons">
-        <button class="btn movie-card__button---watched" @click="movieStore.toggleWatch(movie.filmId)">
-          <span v-if="!movie.isWatched">Watched</span>
-          <span v-else>Unwatched</span>
-        </button>
-        <button class="btn movie-card__info-button--delete"
-          @click="movieStore.deleteMovie(movie.filmId)">Подробнее</button>
-      </div> -->
+      <p class=" p movie-card__info-description">
+        {{ movie.description }}
+      </p>
     </div>
 
   </div>
 </template>
 
 <script setup lang="ts">
-import { PropType, computed } from 'vue';
-// import { useMovieStore } from '@/stores/MovieStore';
+import AppIcon from '@/assets/icons/AppIcon.vue'
+import { PropType, computed, ref } from 'vue';
+import { useFavouriteStore } from '@/stores/FavouriteStore';
 import { IMovie } from '@/interfaces/movies'
-// const movieStore = useMovieStore()
+import { EIconNames } from '@/assets/icons/types';
+const favouriteStore = useFavouriteStore()
 
 const props = defineProps({
   movie: {
@@ -69,56 +77,161 @@ const classes = computed(() => {
   }
 })
 
+const bookmark = computed(() => {
+  if (props.movie.kinopoiskId) {
+    return favouriteStore.movies.some(item => item.kinopoiskId === props.movie.kinopoiskId)
+  } else {
+    return favouriteStore.movies.some(item => item.filmId === props.movie.filmId)
+  }
+})
+
+const isHidden = ref<boolean>(true)
+
+function closeMovieInfo() {
+  isHidden.value = true
+}
+
+function openMovieInfo() {
+  if (isHidden.value === true) {
+    isHidden.value = false
+  } else {
+    closeMovieInfo
+  }
+}
+
+
+function formatMinutes(duration: number | string) {
+  let totalMinutes: number;
+
+  if (typeof (duration) === "string") {
+    const [hours, minutes] = duration.split(':').map(Number);
+    totalMinutes = hours * 60 + minutes;
+  } else {
+    totalMinutes = +duration;
+  }
+  const lastTwoDigits = totalMinutes % 100;
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+    return `${totalMinutes} минут`;
+  }
+  const lastDigit = totalMinutes % 10;
+  if (lastDigit === 1) {
+    return `${totalMinutes} минута`;
+  } else if (lastDigit >= 2 && lastDigit <= 4) {
+    return `${totalMinutes} минуты`;
+  }
+  return `${totalMinutes} минут`;
+}
+
 </script>
 
 <style lang="scss" scoped>
 .movie-card {
-
-  display: grid;
-  grid-template-columns: 230px 1fr;
-  column-gap: 40px;
-  padding: 60px;
-  border-radius: 10px;
+  width: 100%;
+  height: 360px;
+  padding: 16px;
+  display: flex;
   background-color: $dark;
+  border-radius: 12px;
+  position: relative;
+
+  @include break-sm {
+    width: calc(50% - 12px);
+  }
+
+
+
+  @include break-md {
+    padding: 0;
+    border-radius: 0;
+    background-color: transparent;
+    height: 272px;
+  }
+
+  @include break-sm {
+    height: auto;
+  }
 
   &+& {
-    margin-top: 30px;
+    @include break-md {
+      padding: 32px 0 0 0;
+      border-top: 2px solid #FFFFFF14;
+      height: 304px;
+    }
+
+    @include break-sm {
+      padding: 0;
+      border: none;
+      height: auto;
+    }
   }
 
   &__img {
-    width: 230px;
-    height: 328px;
-    box-shadow: 0px 15px 30px 0px rgba(0, 0, 0, 0.2);
+    display: block;
+    width: auto;
+    height: calc(100% - 32px);
+    border-radius: 6px 6px 0 0;
 
+
+    @include break-sm {
+      width: 100%;
+    }
+
+    &-wrapper {
+      position: relative;
+      width: auto;
+      margin-right: 24px;
+      height: 100%;
+      box-shadow: 0px 15px 30px 0px rgba(0, 0, 0, 0.2);
+
+
+      @include break-md {
+        margin-right: 16px;
+      }
+
+      @include break-sm {
+        height: auto;
+        margin-right: 0;
+      }
+    }
   }
 
   &__info {
-    &-name {
-      display: flex;
-      align-items: center;
-      font-weight: 400;
-      font-size: 24px;
-      margin-bottom: 20px;
-      color: $text-secondary;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    @include break-sm {
+      position: absolute;
+      padding: 8px;
+      height: 100%;
+      background-color: $black;
+      opacity: 0;
+      z-index: -1;
+      transition: 0.2s;
     }
 
-    &-description {
-      display: block;
-      margin-bottom: 20px;
-      font-weight: 300;
-      font-size: 16px;
-      line-height: 24px;
-      color: $text-tertiary;
+    &-name {
+      font-size: 24px;
+      margin-bottom: 16px;
+
+      @include break-sm {
+        font-size: 16px;
+      }
     }
+
 
     &-basic {
       display: flex;
-      margin-bottom: 20px;
 
       &__item {
         font-weight: 300;
         font-size: 16px;
         color: $text-tertiary;
+
+        @include break-sm {
+          font-size: 12px;
+        }
 
         &-country {
           &+& {
@@ -130,112 +243,216 @@ const classes = computed(() => {
 
         &+& {
           margin-left: 30px;
+
+          @include break-sm {
+            margin-left: 8px;
+          }
         }
       }
+
+      &+& {
+        margin-top: 8px;
+      }
+    }
+
+    &-description {
+      color: $white;
+      max-height: 280px;
+      height: 100%;
+      overflow: auto;
+      padding-right: 24px;
+      margin-top: 16px;
+      transition: height 2s;
+
+      @include break-sm {
+        font-size: 14px;
+        padding-right: 8px;
+      }
+
+      &+* {
+        margin-top: 24px;
+      }
+
+      &::-webkit-scrollbar {
+        background-color: #FFFFFF14;
+        border-radius: 4px;
+        width: 4px;
+
+        &-thumb {
+          width: 2px;
+          border-radius: 2px;
+          background-color: $border-hover;
+        }
+      }
+
+      &-btn {
+        width: 100%;
+        color: $white;
+      }
+
+      &--opened {
+        height: auto;
+      }
+
+    }
+
+    &--visible {
+      @include break-md {
+        display: flex;
+        opacity: 0.9;
+        top: 0;
+        left: 0;
+        z-index: 2;
+      }
+    }
+  }
+
+  &__bookmark {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    padding: 0;
+    top: 0;
+    right: 8px;
+    cursor: pointer;
+    background-color: #000000a3;
+
+    @include break-sm {
+      width: 40px;
+      height: 40px;
+    }
+
+    &-icon {
+      width: 32px;
+      height: 32px;
+      color: transparent;
+      transition: 0.2s;
+
+      &:hover {
+        color: #26D2A9;
+        opacity: 0.4;
+
+        @include break-sm {
+          color: transparent;
+          opacity: 1;
+        }
+      }
+
+      &--active {
+        color: #26D2A9;
+        opacity: 1;
+
+        &:hover {
+          color: #26D2A9;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+
+  &__buttons {
+    width: 100%;
+    display: flex;
+  }
+
+  &__button {
+    font-size: 16px;
+    line-height: 16px;
+    padding: 8px;
+    width: 100%;
+    color: $white;
+    background: $error;
+    border-radius: 0 0 6px 6px;
+    transition: 0.3s;
+
+    &--watched {
+      background: $success;
     }
   }
 
   &--special {
-    display: flex;
-    width: 100%;
+    height: auto;
     background-color: $transparent;
-    padding: 0;
-    z-index: 2;
+    padding: 0px;
 
+    @include break-md {
+      justify-content: center;
+      height: 100%;
+    }
 
-    & .movie-card {
+    @include break-sm {
+      width: auto;
+    }
+
+    .movie-card {
       &__img {
         width: 100%;
-        height: auto;
-        display: block;
-        box-shadow: 0px 15px 30px 0px rgba(0, 0, 0, 0.2);
+        height: 100%;
+        border-radius: 12px;
+
+        @include break-lg {
+          max-width: 360px;
+          height: auto;
+        }
+
+        @include break-md {
+          max-width: none;
+          width: auto;
+          height: 100%;
+        }
 
         &-wrapper {
-          width: 100%;
-          max-width: 406px;
-          min-width: 258px;
+          position: relative;
+          max-width: 408px;
+          margin-right: 40px;
+          height: 100%;
+
+          @include break-xl {
+            margin-right: 32px;
+          }
+
+          @include break-lg {
+            margin-right: 24px;
+          }
+
+          @include break-md {
+            margin-right: 0;
+          }
+
+          @include break-sm {
+            max-width: none;
+          }
         }
       }
 
       &__info {
-        min-width: 300px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
+        min-width: 400px;
 
-        &-name {
-          display: flex;
-          align-items: center;
-          font-weight: 300;
-          font-size: 60px;
-          margin-bottom: 20px;
-          color: $white;
+        @include break-md {
+          position: absolute;
+          min-width: 0;
+          height: 100%;
+          background-color: $black;
+          opacity: 0;
+          z-index: -1;
+          transition: 0.2s;
         }
 
-        &-description {
-          display: block;
-          width: 100%;
-          max-width: 600px;
-          margin-bottom: 20px;
-          font-weight: 300;
-          font-size: 16px;
-          line-height: 24px;
-          color: $white;
+        @include break-sm {
+          padding: 8px;
         }
 
-        &-basic {
-          display: flex;
-          margin-bottom: 20px;
-
-          &__item {
-            font-weight: 300;
-            font-size: 16px;
-            color: $white;
-
-            &-country {
-              &+& {
-                &::before {
-                  content: " / ";
-                }
-              }
-            }
-
-            &+& {
-              margin-left: 30px;
-            }
+        &--visible {
+          @include break-md {
+            opacity: 0.9;
+            z-index: 2;
           }
         }
       }
     }
-
-    @include break-xl {
-      column-gap: 30px;
-    }
   }
 }
-
-// .movie-accept {
-//   margin-right: 10px;
-// }
-
-// .movie-card .movie-card .movie-buttons {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// }
-
-// .movie-buttons-watched {
-//   color: #fff;
-//   background: #1eb4c3;
-// }
-
-// .movie-buttons-watched__icon {
-//   width: 15px;
-//   margin-left: 10px;
-// }
-
-// .movie-buttons-delete {
-//   color: #fff;
-//   background: #ff2a2a;
-// }
 </style>

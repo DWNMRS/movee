@@ -36,7 +36,6 @@ const searchMovie = ref('')
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 100px;
 
     &__form {
       position: relative;

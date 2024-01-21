@@ -13,12 +13,13 @@ import { onMounted, ref, computed } from 'vue';
 const props = defineProps({
   imagePaths: {
     type: Array as () => string[],
-    default: []
+    default: [],
+    required:false
   },
   movieName: {
     type: String,
-    required: true,
-    default: ''
+    default: '',
+    required: false,
   }
 })
 
@@ -57,12 +58,16 @@ const nextSlide = () => {
 .slider-wrapper--background {
   overflow: hidden;
   position: absolute;
-  z-index: 1;
+  z-index: 0;
   top: 0;
   right: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.5;
+  opacity: 0.3;
+
+  @include break-md {
+    display: none;
+  }
 
   .slider__slide {
     position: absolute;

@@ -1,68 +1,97 @@
 <template>
-  <div class="moviesPage">
-    <h2>My Favorite Movies</h2>
-    <!-- <div class="tabs">
-      <button :class="['btn', { btn_green: movieStore.activeTab === 1 }]" @click="setTab(1)">
-        Favorite
+  <div class="movie-favourite">
+    <div class="tabs">
+      <button :class="['btn', { btn_active: favouriteStore.activeTab === 1 }]" @click="setTab(1)">
+        Все: {{ favouriteStore.movies.length }}
       </button>
-      <button :class="['btn', { btn_green: movieStore.activeTab === 2 }]" @click="setTab(2)">
-        Search
+      <button :class="['btn', { btn_active: favouriteStore.activeTab === 2 }]" @click="setTab(2)">
+        Просмотренные: {{ favouriteStore.watchedMovies.length }}
+      </button>
+      <button :class="['btn', { btn_active: favouriteStore.activeTab === 3 }]" @click="setTab(3)">
+        Не просмотренные: {{ favouriteStore.unWatchedMovies.length }}
       </button>
     </div>
-    <div class="movies" v-if="movieStore.activeTab === 1">
-      <div>
-        <h3>All Movies(count:{{ movieStore.movies.length }})</h3>
-        <MovieCard v-for="movie of movieStore.movies" :key="movie.filmId" :movie="movie" />
+    <div v-if="favouriteStore.activeTab === 1">
+      <div class="movie-favourite__list">
+        <MovieCard v-for="movie of favouriteStore.movies" :key="movie.filmId" :movie="movie" />
       </div>
-      <div>
-        <h3>Watched Movies(count:{{ movieStore.watchedMovies.length }})</h3>
-        <MovieCard v-for="movie of movieStore.watchedMovies" :key="movie.filmId" :movie="movie" />
+    </div>
+    <div v-if="favouriteStore.activeTab === 2">
+      <div class="movie-favourite__list">
+        <MovieCard v-for="movie of favouriteStore.watchedMovies" :key="movie.filmId" :movie="movie" />
       </div>
-
-    </div> -->
-    <!-- <div class="search" v-else>
-      awdawdadad
-    </div> -->
+    </div>
+    <div v-if="favouriteStore.activeTab === 3">
+      <div class="movie-favourite__list">
+        <MovieCard v-for="movie of favouriteStore.unWatchedMovies" :key="movie.filmId" :movie="movie" />
+      </div>
+    </div>
   </div>
 </template>
 
 
 <script setup lang="ts">
 
-// import { useMovieStore } from '@/stores/MovieStore';
-// import MovieCard from './MovieСard.vue';
+import { useFavouriteStore } from '@/stores/FavouriteStore';
+import MovieCard from './MovieСard.vue';
 
-// const movieStore = useMovieStore();
-// const setTab = (id: number) => {
-//   movieStore.setActiveTab(id)
-// }
+const favouriteStore = useFavouriteStore();
+const setTab = (id: number) => {
+  favouriteStore.setActiveTab(id)
+}
+
+
 
 </script>
 
 
-<style lang="scss" scoped>
+<style scoped lang="scss" >
+
+.movie-favourite__list {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  
+  @include break-sm {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+}
 .btn {
   border: none;
-  width: 100px;
+  width: auto;
   height: 40px;
   font-size: 14px;
-  margin: 0 10px;
-  border-radius: 10px;
+  color: $text-disabled;
   cursor: pointer;
-  background: #efefef;
+
+  @include break-sm {
+    font-size: 12px;
+  }
 }
 
 .btn:hover {
+  transition: 0.2s;
   opacity: 0.7;
 }
 
-.btn_green {
-  background: #37df5c;
+.btn_active {
+  border-bottom: 1px solid $white;
+  background-color: #FFFFFF26;
+
+
+}
+
+.btn .btn_active:hover {
+  border-bottom: 2px solid $white;
+  background-color: #FFFFFF26;
 }
 
 .tabs {
   display: flex;
-  justify-content: center;
+  gap: 10px;
   margin-bottom: 30px;
+  border-bottom: 2px solid #FFFFFF14;
 }
 </style>

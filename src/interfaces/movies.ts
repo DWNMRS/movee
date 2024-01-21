@@ -21,7 +21,7 @@ export interface IMovie {
   }[];
 }
 
-export interface IMoviesStore {
+export interface IFavouriteStore {
   movies: IMovie[];
   activeTab: number;
 }
