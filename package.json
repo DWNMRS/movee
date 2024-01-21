@@ -1,12 +1,15 @@
 {
   "name": "my-vue-project",
   "private": true,
+  "homepage": "https://dwnmrs.github.io/my-vue-project/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy":"gh-pages -d dist",
+    "predeploy":"npm run build"
   },
   "dependencies": {
     "pinia": "^2.1.6",
