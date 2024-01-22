@@ -6,7 +6,7 @@ import PageFavourite from "@/pages/PageFavourite.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
+    path: "/movee",
     name:'PageAbout',
     component: PageAbout,
     meta:{
@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: "/premieres",
+    path: "/movee/premieres",
     name:'PagePremieres',
     component: PagePremieres,
     meta:{
@@ -22,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: "/search",
+    path: "/movee/search",
     name:'PageSearch',
     component: PageSearch,
     meta:{
@@ -30,7 +30,7 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: "/favourite",
+    path: "/movee/favourite",
     name:'PageFavourite',
     component: PageFavourite,
     meta:{

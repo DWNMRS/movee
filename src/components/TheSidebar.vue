@@ -1,7 +1,7 @@
 <template>
   <div :class="['sidebar', { 'sidebar--opened': isOpened === true }]">
     <div class="sidebar__header">
-      <router-link class="app-name" :to="'/'" @click="closeMobileMenu">
+      <router-link class="app-name" :to="'/movee'" @click="closeMobileMenu">
         Movee</router-link>
       <button class="sidebar__burger" @click="openCloseMobileMenu">
         <AppIcon v-if="!isOpened" :width="19" :height="14" :name="EIconNames.Burger" />
@@ -41,16 +41,16 @@ interface ISidebarItem {
 }
 const sidebarItems: ISidebarItem[] = [
   {
-    path: "/premieres",
+    path: "/movee/premieres",
     title: "Премьеры",
   },
 
   {
-    path: "/search",
+    path: "/movee/search",
     title: "Поиск",
   },
   {
-    path: "/favourite",
+    path: "/movee/favourite",
     title: "Мои Фильмы",
   },
 ]
