@@ -16,9 +16,12 @@ const titlePage: string = 'Премьеры'
 .container {
   padding-right: 264px;
 
+  @include break-xxl {
+    padding-right: 256px;
+  }
+
   @include break-xl {
     padding-right: 228px;
-    height: calc(100vh - 80px);
   }
 
   @include break-lg {
@@ -33,7 +36,6 @@ const titlePage: string = 'Премьеры'
 
   @include break-sm {
     padding-right: 16px;
-    height: calc(100vh - 60px);
   }
 }
 </style>

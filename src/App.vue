@@ -40,19 +40,17 @@ function loadMoviesFromLocalStorage() {
 @import "./styles/main.scss";
 
 #app {
-  display: flex;
-  justify-content: center;
   background-color: $black;
+  height: 100%;
 }
 
 .main {
-  width: 100%;
+  margin: 0 auto;
   max-width: 1920px;
-  min-height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: $black;
   color: $white;
-  display: flex;
   font-family: "Source Sans Pro", sans-serif;
-  font-weight: 400;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <TheContainer :titlePage="titlePage">
+  <TheContainer>
     <MovieSearch/>
   </TheContainer>
 </template>
@@ -8,5 +8,4 @@
 import TheContainer from '@/components/TheContainer.vue'
 import MovieSearch from '@/components/MovieSearch.vue';
 
-const titlePage:string = 'Поиск'
 </script>

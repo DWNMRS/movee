@@ -1,5 +1,5 @@
 <template>
-  <TheContainer :titlePage="titlePage">
+  <TheContainer>
     <MovieFavourite />
   </TheContainer>
 </template>
@@ -8,5 +8,4 @@
 import MovieFavourite from '@/components/MovieFavourite.vue'
 import TheContainer from '@/components/TheContainer.vue'
 
-const titlePage:string = 'Мои фильмы'
 </script>

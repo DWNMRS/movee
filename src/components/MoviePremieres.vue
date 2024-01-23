@@ -1,5 +1,6 @@
 <template>
   <div class="movie-premieres">
+    <h1 class="h1">Премьеры</h1>
     <MoviePremieresSliderBackground :imagePaths="movieInfo.images[activeMovieId]" :movieName="activeMovie?.nameRu" />
 
     <Transition mode="out-in">
@@ -7,21 +8,13 @@
     </Transition>
 
     <div class="slider-wrapper--side">
-      <Swiper v-if="isSwiperInitialized" @active-index-change="getInformation" 
-        :slide-to-clicked-slide="swiperOptions.slideToClickedSlide"
-        :centered-slides="swiperOptions.centeredSlides" 
-        :slides-per-view="swiperOptions.slidesPerView"
-        :watch-overflow="swiperOptions.watchOverflow"
-        :space-between="swiperOptions.spaceBetween" 
-        :breakpoints="swiperOptions.breakpoints"
-        :auto-height="swiperOptions.autoHeight" 
-        :pagination="swiperOptions.pagination"
-        :mousewheel="swiperOptions.mousewheel"
-        :direction="swiperOptions.direction" 
-        :autoplay="swiperOptions.autoplay"
-        :speed="swiperOptions.speed" 
-        :loop="swiperOptions.loop" 
-        :modules="modules">
+      <Swiper v-if="isSwiperInitialized" @active-index-change="getInformation"
+        :slide-to-clicked-slide="swiperOptions.slideToClickedSlide" :centered-slides="swiperOptions.centeredSlides"
+        :slides-per-view="swiperOptions.slidesPerView" :watch-overflow="swiperOptions.watchOverflow"
+        :space-between="swiperOptions.spaceBetween" :breakpoints="swiperOptions.breakpoints"
+        :auto-height="swiperOptions.autoHeight" :pagination="swiperOptions.pagination"
+        :mousewheel="swiperOptions.mousewheel" :direction="swiperOptions.direction" :autoplay="swiperOptions.autoplay"
+        :speed="swiperOptions.speed" :loop="swiperOptions.loop" :modules="modules">
 
         <SwiperSlide v-for="premiere of premiereStore.movies" :key="premiere.kinopoiskId">
           <img class="swiper-slide__img" :src="premiere.posterUrlPreview"
@@ -99,8 +92,8 @@ const swiperOptions: SwiperOptions = {
 
   breakpoints: {
     320: {
-      slidesPerView: "auto",
       direction: "horizontal",
+      slidesPerView: "auto",
       pagination: {
         enabled: false,
         clickable: false,
@@ -116,6 +109,7 @@ const swiperOptions: SwiperOptions = {
       },
     },
     1280: {
+      direction: "vertical",
       pagination: {
         enabled: true,
         clickable: true,
@@ -146,28 +140,9 @@ function getInformation(swiperInstance: SwiperInstance) {
 
 <style lang="scss">
 .movie-premieres {
-  @include break-xl {
-    height: calc(100% - 104px);
-  }
-
-  @include break-lg {
-    display: flex;
-    align-items: center;
-    height: calc(100% - 88px);
-  }
-
-  @include break-md {
-    height: calc(100% - 72px);
-  }
-
-  @include break-sm {
-    height: calc(100% - 40px);
-    justify-content: center;
-  }
-
-  .h1 {
-    z-index: 2;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .slider-wrapper--side {
@@ -208,6 +183,10 @@ function getInformation(swiperInstance: SwiperInstance) {
       @include break-xl {
         width: 140px
       }
+
+      @include break-lg {
+        width: 100%
+      }
     }
 
     &-slide {
@@ -223,7 +202,7 @@ function getInformation(swiperInstance: SwiperInstance) {
       }
 
       @include break-lg {
-        width: auto;
+        width: 112.05px;
         height: 160px;
       }
 

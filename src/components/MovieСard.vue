@@ -7,13 +7,15 @@
       </button>
 
       <img class="movie-card__img" :src="movie.posterUrl" :alt="movie.nameRu" @click="openMovieInfo" />
-      <div v-if="!isSpecial" class="movie-card__buttons">
+
+      <div v-if="!isSpecial && !isSearch" class="movie-card__buttons">
         <button :class="['movie-card__button', { 'movie-card__button--watched': movie.isWatched === true }]"
           @click="favouriteStore.toggleWatch(movie.kinopoiskId)">
-          <span v-if="!movie.isWatched">Не просмотренно</span>
-          <span v-else>Просмотренно</span>
+          <span v-if="!movie.isWatched">НЕ ПРОСМОТРЕННО</span>
+          <span v-else>ПРОСМОТРЕННО</span>
         </button>
       </div>
+
     </div>
     <div :class="['movie-card__info', { 'movie-card__info--visible': isHidden === false }]" @click="closeMovieInfo">
       <h2 :class="['h2', { 'movie-card__info-name': !isSpecial }]">
@@ -46,6 +48,8 @@
       </p>
     </div>
 
+
+
   </div>
 </template>
 
@@ -64,6 +68,11 @@ const props = defineProps({
     default: () => { }
   },
   isSpecial: {
+    type: Boolean as PropType<boolean>,
+    required: false,
+    default: false,
+  },
+  isSearch: {
     type: Boolean as PropType<boolean>,
     required: false,
     default: false,
@@ -127,18 +136,11 @@ function formatMinutes(duration: number | string) {
 <style lang="scss" scoped>
 .movie-card {
   width: 100%;
-  height: 360px;
+  min-height: 360px;
   padding: 16px;
   display: flex;
   background-color: $dark;
   border-radius: 12px;
-  position: relative;
-
-  @include break-sm {
-    width: calc(50% - 12px);
-  }
-
-
 
   @include break-md {
     padding: 0;
@@ -148,6 +150,7 @@ function formatMinutes(duration: number | string) {
   }
 
   @include break-sm {
+    width: calc(50% - 8px);
     height: auto;
   }
 
@@ -168,8 +171,8 @@ function formatMinutes(duration: number | string) {
   &__img {
     display: block;
     width: auto;
-    height: calc(100% - 32px);
-    border-radius: 6px 6px 0 0;
+    height: 100%;
+    border-radius: 6px;
 
 
     @include break-sm {
@@ -201,10 +204,14 @@ function formatMinutes(duration: number | string) {
     flex-direction: column;
     justify-content: flex-start;
 
+
     @include break-sm {
       position: absolute;
-      padding: 8px;
+      width: 100%;
       height: 100%;
+      top: 0;
+      left: 0;
+      padding: 8px;
       background-color: $black;
       opacity: 0;
       z-index: -1;
@@ -298,10 +305,10 @@ function formatMinutes(duration: number | string) {
 
     &--visible {
       @include break-md {
+        width: 100%;
+        height: 100%;
         display: flex;
         opacity: 0.9;
-        top: 0;
-        left: 0;
         z-index: 2;
       }
     }
@@ -316,7 +323,7 @@ function formatMinutes(duration: number | string) {
     position: absolute;
     padding: 0;
     top: 0;
-    right: 8px;
+    left: 8px;
     cursor: pointer;
     background-color: #000000a3;
 
@@ -359,24 +366,32 @@ function formatMinutes(duration: number | string) {
   }
 
   &__button {
-    font-size: 16px;
+    position: absolute;
+    top: 8px;
+    right: 0px;
+    font-size: 12px;
     line-height: 16px;
-    padding: 8px;
-    width: 100%;
-    color: $white;
-    background: $error;
+    width: auto;
+    color: $error;
+    background-color: #000000cd;
+    border:2px solid $error;
     border-radius: 0 0 6px 6px;
     transition: 0.3s;
 
     &--watched {
-      background: $success;
+      border:2px solid $success;
+      color: $success;
     }
   }
 
   &--special {
-    height: auto;
+    position: relative;
+    flex: 1;
+    height: 100%;
+    align-items: start;
     background-color: $transparent;
     padding: 0px;
+    overflow: hidden;
 
     @include break-md {
       justify-content: center;
@@ -389,26 +404,14 @@ function formatMinutes(duration: number | string) {
 
     .movie-card {
       &__img {
-        width: 100%;
+        width: auto;
         height: 100%;
         border-radius: 12px;
 
-        @include break-lg {
-          max-width: 360px;
-          height: auto;
-        }
-
-        @include break-md {
-          max-width: none;
-          width: auto;
-          height: 100%;
-        }
-
         &-wrapper {
+          max-height: 480px;
           position: relative;
-          max-width: 408px;
           margin-right: 40px;
-          height: 100%;
 
           @include break-xl {
             margin-right: 32px;
@@ -416,6 +419,9 @@ function formatMinutes(duration: number | string) {
 
           @include break-lg {
             margin-right: 24px;
+
+            max-height: none;
+            height: 100%;
           }
 
           @include break-md {
@@ -429,7 +435,7 @@ function formatMinutes(duration: number | string) {
       }
 
       &__info {
-        min-width: 400px;
+        height: 100%;
 
         @include break-md {
           position: absolute;
@@ -450,6 +456,11 @@ function formatMinutes(duration: number | string) {
             opacity: 0.9;
             z-index: 2;
           }
+        }
+
+        &-description {
+          max-height: none;
+
         }
       }
     }

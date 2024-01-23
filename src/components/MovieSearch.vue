@@ -1,5 +1,6 @@
 <template>
   <div class="movie-search">
+    <h1 class="h1">Поиск</h1>
     <form class="movie-search__form" @submit.prevent="searchStore.getMovies(searchMovie)">
       <input class="movie-search__form-input" type="text" placeholder="Поиск по названию" v-model="searchMovie">
       <button>
@@ -8,8 +9,8 @@
 
     </form>
     <Loader v-if="searchStore.status == 'loading'" />
-    <div v-else-if="searchStore.status == 'success'">
-      <MovieCard v-for="movie of searchStore.movies" :key="movie.filmId" :movie="movie" :is-search="true" />
+    <div v-else-if="searchStore.status == 'success'" class="movie-search__result">
+      <MovieCard v-for="movie of searchStore.movies" :key="movie.filmId" :movie="movie" is-search />
     </div>
 
 
@@ -33,6 +34,7 @@ const searchMovie = ref('')
 .movie {
   &-search {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -61,9 +63,28 @@ const searchMovie = ref('')
       }
     }
 
-    & p,
-    .p {
-      text-align: center;
+    &__result {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      overflow: auto;
+      padding-right: 16px;
+
+      &::-webkit-scrollbar {
+        background-color: #FFFFFF14;
+        border-radius: 4px;
+        width: 4px;
+
+        &-thumb {
+          width: 2px;
+          border-radius: 2px;
+          background-color: $border-hover;
+        }
+
+        @include break-md {
+          display: none;
+        }
+      }
     }
   }
 }
