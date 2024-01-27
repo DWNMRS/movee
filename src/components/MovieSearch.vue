@@ -30,8 +30,7 @@ const searchMovie = ref('')
 
 </script>
 
-<style scoped lang="scss">
-.movie {
+<style scoped lang="scss">.movie {
   &-search {
     width: 100%;
     height: 100%;
@@ -45,12 +44,12 @@ const searchMovie = ref('')
       padding: 10px;
       margin-bottom: 50px;
       border-radius: 20px;
-      border: 10px solid $dark;
+      border: 10px solid $background-secondary;
       transition: 0.2s;
       display: flex;
 
       &-input {
-        background-color: $black;
+        background-color: $background;
         color: $white;
         width: 100%;
         height: 30px;
@@ -58,7 +57,7 @@ const searchMovie = ref('')
         border-radius: 5px;
 
         &::placeholder {
-          color: $text-tertiary;
+          color: $text-secondary;
         }
       }
     }

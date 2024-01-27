@@ -49,7 +49,6 @@ const setTab = (id: number) => {
   flex-direction: column;
   height: 100%;
 
-
   &__tabs {
     display: flex;
     gap: 10px;
@@ -57,16 +56,16 @@ const setTab = (id: number) => {
     border-bottom: 2px solid #FFFFFF14;
 
     &-btn {
-      border-bottom: 2px solid transparent;
       width: auto;
       height: 40px;
       font-size: 14px;
       color: $text-disabled;
       cursor: pointer;
+      border-bottom: 2px solid transparent;
 
       &:hover {
         transition: 0.2s;
-        opacity: 0.7;
+        opacity: 0.8;
       }
 
       @include break-sm {
@@ -74,11 +73,13 @@ const setTab = (id: number) => {
       }
 
       &--active {
-        border-bottom: 2px solid $white;
+        color: $white;
+        border-bottom: 2px solid $accent-secondary;
         background-color: #FFFFFF26;
 
         &:hover {
-          border-bottom: 2px solid $white;
+          color: $white;
+          border-bottom: 2px solid $accent-secondary;
           background-color: #FFFFFF26;
         }
       }
@@ -91,10 +92,9 @@ const setTab = (id: number) => {
     flex-direction: column;
     gap: 32px;
     overflow: auto;
-
     padding-right: 16px;
 
-    @include break-sm {
+    @include break-md {
       flex-direction: row;
       flex-wrap: wrap;
       gap: 16px;
@@ -105,6 +105,7 @@ const setTab = (id: number) => {
       background-color: #FFFFFF14;
       border-radius: 4px;
       width: 4px;
+      margin: 10px 0;
 
       &-thumb {
         width: 2px;
@@ -117,4 +118,5 @@ const setTab = (id: number) => {
       }
     }
   }
-}</style>
+}
+</style>

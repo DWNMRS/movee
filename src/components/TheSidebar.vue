@@ -1,7 +1,7 @@
 <template>
   <div :class="['sidebar', { 'sidebar--opened': isOpened === true }]">
     <div class="sidebar__header">
-      <router-link class="app-name" :to="'/movee'" @click="closeMobileMenu">
+      <router-link class="app-name" :to="{ name: 'PageAbout' }" @click="closeMobileMenu">
         Movee</router-link>
       <button class="sidebar__burger" @click="openCloseMobileMenu">
         <AppIcon v-if="!isOpened" :width="19" :height="14" :name="EIconNames.Burger" />
@@ -65,6 +65,7 @@ const sidebarItems: ISidebarItem[] = [
 
 .sidebar {
   position: fixed;
+  z-index: 10;
   width: 200px;
   height: 100%;
   padding: 48px 24px;
@@ -72,7 +73,7 @@ const sidebarItems: ISidebarItem[] = [
   flex-direction: column;
   justify-content: space-between;
   background: $background-accent;
-  z-index: 10;
+  color: $white;
   transition: height 0.3s ease-in-out;
 
   @include break-xl {
@@ -85,7 +86,7 @@ const sidebarItems: ISidebarItem[] = [
     justify-content: space-between;
   }
 
-  @include break-sm {
+  @include break-md {
     height: 60px;
     flex-direction: column;
     justify-content: normal;
@@ -97,8 +98,6 @@ const sidebarItems: ISidebarItem[] = [
     }
   }
 
-
-
   &__header {
     margin-bottom: 120px;
 
@@ -106,14 +105,13 @@ const sidebarItems: ISidebarItem[] = [
       margin-bottom: 0;
     }
 
-    @include break-sm {
+    @include break-md {
       position: relative;
       width: 100%;
       min-height: 60px;
       display: flex;
       justify-content: center;
       margin-bottom: 0;
-
     }
   }
 
@@ -126,7 +124,7 @@ const sidebarItems: ISidebarItem[] = [
     align-items: center;
     justify-content: center;
 
-    @include break-sm {
+    @include break-md {
       display: flex;
     }
   }
@@ -149,13 +147,12 @@ const sidebarItems: ISidebarItem[] = [
     display: flex;
     flex-direction: column;
 
-
     @include break-xl {
       flex-direction: row;
       width: auto;
     }
 
-    @include break-sm {
+    @include break-md {
       flex-direction: column;
       align-items: center;
       width: 100%;
@@ -185,7 +182,7 @@ const sidebarItems: ISidebarItem[] = [
         padding: 0 9px;
       }
 
-      @include break-sm {
+      @include break-md {
         width: 100%;
         border-radius: 0;
         padding: 10px;
@@ -202,12 +199,7 @@ const sidebarItems: ISidebarItem[] = [
         }
 
         @include break-md {
-          margin-left: 10px;
-        }
-
-        @include break-sm {
           margin-left: 0;
-
         }
       }
     }

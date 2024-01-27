@@ -1,5 +1,6 @@
 <template>
-  <TheContainer :titlePage="titlePage">
+  <TheContainer>
+    <h1 class="h1">Премьеры</h1>
     <MoviePremieres />
   </TheContainer>
 </template>
@@ -8,12 +9,12 @@
 import TheContainer from '@/components/TheContainer.vue'
 import MoviePremieres from '@/components/MoviePremieres.vue'
 
-const titlePage: string = 'Премьеры'
 
 </script>
 
 <style scoped lang="scss">
 .container {
+  color: $white;
   padding-right: 264px;
 
   @include break-xxl {
@@ -21,21 +22,17 @@ const titlePage: string = 'Премьеры'
   }
 
   @include break-xl {
-    padding-right: 228px;
-  }
-
-  @include break-lg {
     padding-right: 40px;
     padding-bottom: 240px;
   }
 
   @include break-md {
-    padding-right: 32px;
-    padding-bottom: 224px;
+    padding-right: 16px;
+    padding-bottom: 192px;
   }
 
-  @include break-sm {
-    padding-right: 16px;
+  .h1 {
+    z-index: 1;
   }
 }
 </style>

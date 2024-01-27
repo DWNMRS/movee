@@ -3,6 +3,7 @@ import PageAbout from "@/pages/PageAbout.vue"
 import PagePremieres from "@/pages/PagePremieres.vue"
 import PageSearch from "@/pages/PageSearch.vue";
 import PageFavourite from "@/pages/PageFavourite.vue";
+import PageDetail from "@/pages/PageDetail.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -37,6 +38,16 @@ const routes: Array<RouteRecordRaw> = [
       title:'Мои фильмы'
     }
   },
+  {
+    path: "/movee/:id",
+    name:'PageDetail',
+    component: PageDetail,
+    meta:{
+      title:'О фильме'
+    },
+    props:true
+
+  }
 ];
 
 const router = createRouter({

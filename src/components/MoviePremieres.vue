@@ -1,6 +1,6 @@
 <template>
   <div class="movie-premieres">
-    <h1 class="h1">Премьеры</h1>
+
     <MoviePremieresSliderBackground :imagePaths="movieInfo.images[activeMovieId]" :movieName="activeMovie?.nameRu" />
 
     <Transition mode="out-in">
@@ -99,7 +99,7 @@ const swiperOptions: SwiperOptions = {
         clickable: false,
       },
     },
-    1024: {
+    1280: {
       direction: "vertical",
       spaceBetween: 30,
       slideToClickedSlide: true,
@@ -108,7 +108,7 @@ const swiperOptions: SwiperOptions = {
         clickable: true,
       },
     },
-    1280: {
+    1440: {
       direction: "vertical",
       pagination: {
         enabled: true,
@@ -141,8 +141,10 @@ function getInformation(swiperInstance: SwiperInstance) {
 <style lang="scss">
 .movie-premieres {
   display: flex;
-  flex-direction: column;
+  overflow: hidden;
   height: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .slider-wrapper--side {
@@ -155,10 +157,6 @@ function getInformation(swiperInstance: SwiperInstance) {
   padding-right: 8px;
 
   @include break-xl {
-    width: 180px;
-  }
-
-  @include break-lg {
     top: auto;
     bottom: 40px;
     width: 100%;
@@ -167,10 +165,6 @@ function getInformation(swiperInstance: SwiperInstance) {
   }
 
   @include break-md {
-    bottom: 32px;
-  }
-
-  @include break-sm {
     bottom: 16px;
   }
 
@@ -181,27 +175,21 @@ function getInformation(swiperInstance: SwiperInstance) {
       width: 160px;
 
       @include break-xl {
-        width: 140px
-      }
-
-      @include break-lg {
-        width: 100%
+        width: 100%;
       }
     }
 
     &-slide {
       width: 100%;
       height: 234px;
-      background-color: #000000;
+      background-color: $background-secondary;
       transition: opacity 2s;
       border-radius: 6px;
       overflow: hidden;
+      box-shadow: 0px 15px 15px 0px rgba(0, 0, 0, 0.2);
+      opacity: 0.3;
 
       @include break-xl {
-        height: 204px;
-      }
-
-      @include break-lg {
         width: 112.05px;
         height: 160px;
       }
@@ -209,8 +197,10 @@ function getInformation(swiperInstance: SwiperInstance) {
       img {
         width: 100%;
         height: 100%;
-        opacity: 0.3;
-        transition: 1s;
+      }
+
+      &-prev, &-next {
+        opacity: 0.6;
       }
 
       &-active {
@@ -223,7 +213,7 @@ function getInformation(swiperInstance: SwiperInstance) {
     }
 
     &-pagination-bullet {
-      background: #00FFFF;
+      background: $accent;
     }
   }
 }

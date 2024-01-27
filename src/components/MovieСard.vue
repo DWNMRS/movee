@@ -6,6 +6,7 @@
           :width="32" :height="32" :name="EIconNames.Bookmark" />
       </button>
 
+
       <img class="movie-card__img" :src="movie.posterUrl" :alt="movie.nameRu" @click="openMovieInfo" />
 
       <div v-if="!isSpecial && !isSearch" class="movie-card__buttons">
@@ -18,9 +19,11 @@
 
     </div>
     <div :class="['movie-card__info', { 'movie-card__info--visible': isHidden === false }]" @click="closeMovieInfo">
-      <h2 :class="['h2', { 'movie-card__info-name': !isSpecial }]">
-        {{ movie.nameRu }}
-      </h2>
+      <router-link :to="{ name: 'PageDetail', params: { id: movie.kinopoiskId } }">
+        <h2 :class="['h2', { 'movie-card__info-name': !isSpecial }]">
+          {{ movie.nameRu }}
+        </h2>
+      </router-link>
       <div class="movie-card__info-basic">
         <span class="movie-card__info-basic__item">
           {{ movie.year }}
@@ -136,32 +139,35 @@ function formatMinutes(duration: number | string) {
 <style lang="scss" scoped>
 .movie-card {
   width: 100%;
-  min-height: 360px;
+  height: 360px;
   padding: 16px;
   display: flex;
-  background-color: $dark;
+  background-color: $background-secondary;
   border-radius: 12px;
 
-  @include break-md {
-    padding: 0;
-    border-radius: 0;
+  @include break-xl {
     background-color: transparent;
-    height: 272px;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  @include break-md {
+    width: calc(100% / 3 - 11px);
+    height: auto;
   }
 
   @include break-sm {
     width: calc(50% - 8px);
-    height: auto;
   }
 
   &+& {
-    @include break-md {
-      padding: 32px 0 0 0;
+    @include break-xl {
       border-top: 2px solid #FFFFFF14;
-      height: 304px;
+      padding-top: 32px;
+      height: 392px;
     }
 
-    @include break-sm {
+    @include break-md {
       padding: 0;
       border: none;
       height: auto;
@@ -174,8 +180,7 @@ function formatMinutes(duration: number | string) {
     height: 100%;
     border-radius: 6px;
 
-
-    @include break-sm {
+    @include break-md {
       width: 100%;
     }
 
@@ -186,12 +191,7 @@ function formatMinutes(duration: number | string) {
       height: 100%;
       box-shadow: 0px 15px 30px 0px rgba(0, 0, 0, 0.2);
 
-
       @include break-md {
-        margin-right: 16px;
-      }
-
-      @include break-sm {
         height: auto;
         margin-right: 0;
       }
@@ -204,15 +204,14 @@ function formatMinutes(duration: number | string) {
     flex-direction: column;
     justify-content: flex-start;
 
-
-    @include break-sm {
+    @include break-md {
       position: absolute;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
       padding: 8px;
-      background-color: $black;
+      background-color: $background;
       opacity: 0;
       z-index: -1;
       transition: 0.2s;
@@ -222,22 +221,27 @@ function formatMinutes(duration: number | string) {
       font-size: 24px;
       margin-bottom: 16px;
 
-      @include break-sm {
+      @include break-md {
         font-size: 16px;
       }
     }
 
-
     &-basic {
       display: flex;
+      color: $text-secondary;
+      flex-wrap: wrap;
+      gap: 16px;
+
+      @include break-md {
+        gap: 8px;
+      }
 
       &__item {
         font-weight: 300;
         font-size: 16px;
-        color: $text-tertiary;
 
-        @include break-sm {
-          font-size: 12px;
+        @include break-md {
+          font-size: 14px;
         }
 
         &-country {
@@ -249,29 +253,26 @@ function formatMinutes(duration: number | string) {
         }
 
         &+& {
-          margin-left: 30px;
-
-          @include break-sm {
+          @include break-md {
             margin-left: 8px;
           }
         }
       }
 
       &+& {
-        margin-top: 8px;
+        margin-top: 16px;
       }
     }
 
     &-description {
-      color: $white;
       max-height: 280px;
       height: 100%;
       overflow: auto;
       padding-right: 24px;
-      margin-top: 16px;
+      margin-top: 24px;
       transition: height 2s;
 
-      @include break-sm {
+      @include break-md {
         font-size: 14px;
         padding-right: 8px;
       }
@@ -300,7 +301,6 @@ function formatMinutes(duration: number | string) {
       &--opened {
         height: auto;
       }
-
     }
 
     &--visible {
@@ -308,7 +308,7 @@ function formatMinutes(duration: number | string) {
         width: 100%;
         height: 100%;
         display: flex;
-        opacity: 0.9;
+        opacity: 0.95;
         z-index: 2;
       }
     }
@@ -327,7 +327,7 @@ function formatMinutes(duration: number | string) {
     cursor: pointer;
     background-color: #000000a3;
 
-    @include break-sm {
+    @include break-md {
       width: 40px;
       height: 40px;
     }
@@ -342,7 +342,7 @@ function formatMinutes(duration: number | string) {
         color: #26D2A9;
         opacity: 0.4;
 
-        @include break-sm {
+        @include break-md {
           color: transparent;
           opacity: 1;
         }
@@ -374,61 +374,72 @@ function formatMinutes(duration: number | string) {
     width: auto;
     color: $error;
     background-color: #000000cd;
-    border:2px solid $error;
+    border: 2px solid $error;
     border-radius: 0 0 6px 6px;
     transition: 0.3s;
 
     &--watched {
-      border:2px solid $success;
+      border: 2px solid $success;
       color: $success;
     }
   }
 
   &--special {
     position: relative;
-    flex: 1;
-    height: 100%;
+    height: auto;
     align-items: start;
     background-color: $transparent;
     padding: 0px;
     overflow: hidden;
 
-    @include break-md {
-      justify-content: center;
+    @include break-xl {
       height: 100%;
+      max-height: 560px;
     }
 
-    @include break-sm {
-      width: auto;
+    @include break-lg {
+      justify-content: center;
+      max-height: 480px;
+    }
+
+    @include break-md {
+      width: 100%;
     }
 
     .movie-card {
       &__img {
-        width: auto;
+        width: 100%;
         height: 100%;
         border-radius: 12px;
 
-        &-wrapper {
-          max-height: 480px;
-          position: relative;
-          margin-right: 40px;
+        @include break-xxl {
+          width: auto;
+        }
 
-          @include break-xl {
-            margin-right: 32px;
+        &-wrapper {
+          height: 512px;
+          min-width: 360px;
+          background-color: $background-secondary;
+          border-radius: 12px;
+          position: relative;
+          margin-right: 32px;
+
+          @include break-xxl {
+            width: auto;
+            min-width: auto;
           }
 
-          @include break-lg {
+          @include break-xl {
             margin-right: 24px;
-
-            max-height: none;
             height: 100%;
+            max-height: 580px;
           }
 
           @include break-md {
             margin-right: 0;
           }
 
-          @include break-sm {
+          @include break-md {
             max-width: none;
           }
         }
@@ -441,14 +452,11 @@ function formatMinutes(duration: number | string) {
           position: absolute;
           min-width: 0;
           height: 100%;
-          background-color: $black;
+          background-color: $background;
           opacity: 0;
           z-index: -1;
           transition: 0.2s;
-        }
-
-        @include break-sm {
-          padding: 8px;
+          padding: 16px;
         }
 
         &--visible {
@@ -460,7 +468,6 @@ function formatMinutes(duration: number | string) {
 
         &-description {
           max-height: none;
-
         }
       }
     }

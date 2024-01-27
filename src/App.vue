@@ -40,7 +40,7 @@ function loadMoviesFromLocalStorage() {
 @import "./styles/main.scss";
 
 #app {
-  background-color: $black;
+  background-color: $background;
   height: 100%;
 }
 
@@ -49,8 +49,8 @@ function loadMoviesFromLocalStorage() {
   max-width: 1920px;
   width: 100%;
   height: 100%;
-  background-color: $black;
-  color: $white;
+  background-color: $background;
+  color: $text;
   font-family: "Source Sans Pro", sans-serif;
 }
 </style>
