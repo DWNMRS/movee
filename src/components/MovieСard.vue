@@ -19,11 +19,10 @@
 
     </div>
     <div :class="['movie-card__info', { 'movie-card__info--visible': isHidden === false }]" @click="closeMovieInfo">
-      <router-link :to="{ name: 'PageDetail', params: { id: movie.kinopoiskId } }">
-        <h2 :class="['h2', { 'movie-card__info-name': !isSpecial }]">
-          {{ movie.nameRu }}
-        </h2>
-      </router-link>
+
+      <h2 :class="['h2', { 'movie-card__info-name': !isSpecial }]">
+        {{ movie.nameRu }}
+      </h2>
       <div class="movie-card__info-basic">
         <span class="movie-card__info-basic__item">
           {{ movie.year }}
@@ -139,7 +138,6 @@ function formatMinutes(duration: number | string) {
 <style lang="scss" scoped>
 .movie-card {
   width: 100%;
-  height: 360px;
   padding: 16px;
   display: flex;
   background-color: $background-secondary;
@@ -176,22 +174,24 @@ function formatMinutes(duration: number | string) {
 
   &__img {
     display: block;
-    width: auto;
-    height: 100%;
+    width: 200px;
+    height: 300px;
     border-radius: 6px;
+    object-fit: cover;
 
     @include break-md {
       width: 100%;
+      height: 100%;
     }
 
     &-wrapper {
       position: relative;
-      width: auto;
       margin-right: 24px;
-      height: 100%;
+      height: fit-content;
       box-shadow: 0px 15px 30px 0px rgba(0, 0, 0, 0.2);
 
       @include break-md {
+        width: 100%;
         height: auto;
         margin-right: 0;
       }
@@ -395,6 +395,7 @@ function formatMinutes(duration: number | string) {
     @include break-xl {
       height: 100%;
       max-height: 560px;
+      padding-top: 32px;
     }
 
     @include break-lg {

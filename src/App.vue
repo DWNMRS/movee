@@ -39,8 +39,26 @@ function loadMoviesFromLocalStorage() {
 <style lang="scss">
 @import "./styles/main.scss";
 
-#app {
+body {
   background-color: $background;
+
+  &::-webkit-scrollbar {
+    background-color: #FFFFFF14;
+    width: 14px;
+
+    &-thumb {
+      width: 4px;
+      border-radius: 2px;
+      background-color: $border-hover;
+    }
+
+    @include break-md {
+      display: none;
+    }
+  }
+}
+
+#app {
   height: 100%;
 }
 
@@ -49,8 +67,9 @@ function loadMoviesFromLocalStorage() {
   max-width: 1920px;
   width: 100%;
   height: 100%;
-  background-color: $background;
   color: $text;
   font-family: "Source Sans Pro", sans-serif;
+
+  
 }
 </style>

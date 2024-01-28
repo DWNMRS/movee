@@ -22,7 +22,7 @@ import MoviePremieres from '@/components/MoviePremieres.vue'
   }
 
   @include break-xl {
-    padding-right: 40px;
+    padding-right: 32px;
     padding-bottom: 240px;
   }
 

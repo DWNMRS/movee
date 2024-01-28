@@ -12,21 +12,17 @@
 h1,.h1{
   font-weight: 300;
   font-size: 64px;
-  margin-bottom: 56px;
 
   @include break-xl {
     font-size: 56px;
-    margin-bottom: 48px;
   }
 
   @include break-md {
     font-size: 40px;
-    margin-bottom: 32px;
   }
 
   @include break-sm{
     font-size: 32px;
-    margin-bottom: 16px;
   }
 }
 

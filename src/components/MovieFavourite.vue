@@ -1,22 +1,24 @@
 <template>
   <div class="movie-favourite">
     <h1 class="h1">Мои Фильмы</h1>
-    <div class="movie-favourite__tabs">
-      <button
-        :class="['movie-favourite__tabs-btn', { 'movie-favourite__tabs-btn--active': favouriteStore.activeTab === 1 }]"
-        @click="setTab(1)">
-        Все: {{ favouriteStore.movies.length }}
-      </button>
-      <button
-        :class="['movie-favourite__tabs-btn', { 'movie-favourite__tabs-btn--active': favouriteStore.activeTab === 2 }]"
-        @click="setTab(2)">
-        Просмотренные: {{ favouriteStore.watchedMovies.length }}
-      </button>
-      <button
-        :class="['movie-favourite__tabs-btn', { 'movie-favourite__tabs-btn--active': favouriteStore.activeTab === 3 }]"
-        @click="setTab(3)">
-        Не просмотренные: {{ favouriteStore.unWatchedMovies.length }}
-      </button>
+    <div class="movie-favourite__tabs-wrapper">
+      <div class="movie-favourite__tabs">
+        <button
+          :class="['movie-favourite__tabs-btn', { 'movie-favourite__tabs-btn--active': favouriteStore.activeTab === 1 }]"
+          @click="setTab(1)">
+          Все: {{ favouriteStore.movies.length }}
+        </button>
+        <button
+          :class="['movie-favourite__tabs-btn', { 'movie-favourite__tabs-btn--active': favouriteStore.activeTab === 2 }]"
+          @click="setTab(2)">
+          Просмотренные: {{ favouriteStore.watchedMovies.length }}
+        </button>
+        <button
+          :class="['movie-favourite__tabs-btn', { 'movie-favourite__tabs-btn--active': favouriteStore.activeTab === 3 }]"
+          @click="setTab(3)">
+          Не просмотренные: {{ favouriteStore.unWatchedMovies.length }}
+        </button>
+      </div>
     </div>
     <div v-if="favouriteStore.activeTab === 1" class="movie-favourite__list">
       <MovieCard v-for="movie of favouriteStore.movies" :key="movie.filmId" :movie="movie" />
@@ -52,8 +54,24 @@ const setTab = (id: number) => {
   &__tabs {
     display: flex;
     gap: 10px;
-    margin-bottom: 30px;
     border-bottom: 2px solid #FFFFFF14;
+
+    &-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      padding: 32px 0;
+      background-color: $background;
+
+      @include break-xl {
+        top: 80px;
+      }
+
+      @include break-md {
+        top: 60px;
+        padding: 16px 0;
+      }
+    }
 
     &-btn {
       width: auto;
@@ -92,7 +110,6 @@ const setTab = (id: number) => {
     flex-direction: column;
     gap: 32px;
     overflow: auto;
-    padding-right: 16px;
 
     @include break-md {
       flex-direction: row;
