@@ -99,11 +99,6 @@ const sidebarItems: ISidebarItem[] = [
   }
 
   &__header {
-    margin-bottom: 120px;
-
-    @include break-xl {
-      margin-bottom: 0;
-    }
 
     @include break-md {
       position: relative;
