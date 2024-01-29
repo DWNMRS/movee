@@ -1,7 +1,7 @@
 <template>
   <main class="main">
     <TheSidebar />
-    <router-view />
+    <RouterView />
     <AppIconSprite />
   </main>
 </template>
@@ -14,7 +14,9 @@ import { watch, onMounted } from "vue";
 import { useFavouriteStore } from '@/stores/FavouriteStore';
 import router from "./router/router";
 import { register } from 'swiper/element/bundle';
+
 register()
+
 watch(() => router.currentRoute.value.meta, (newRoute) => {
   document.title = `Movee | ${newRoute.title}`
 })
@@ -31,10 +33,7 @@ function loadMoviesFromLocalStorage() {
   }
 }
 
-
 </script>
-
-
 
 <style lang="scss">
 @import "./styles/main.scss";
@@ -69,7 +68,5 @@ body {
   height: 100%;
   color: $text;
   font-family: "Source Sans Pro", sans-serif;
-
-  
 }
 </style>

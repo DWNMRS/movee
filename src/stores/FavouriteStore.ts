@@ -20,29 +20,27 @@ export const useFavouriteStore = defineStore("favouriteStore", {
       this.activeTab = id;
     },
     toggleWatch(id: number) {
-      const idx = this.movies.findIndex((el) => el.kinopoiskId === id);
-      this.movies[idx].isWatched = !this.movies[idx].isWatched;
-      localStorage.setItem('movies', JSON.stringify(this.movies))
+      const movie = this.movies.find((el) => el.kinopoiskId === id);
+    
+      if (movie) {
+        movie.isWatched = !movie.isWatched;
+        localStorage.setItem('movies', JSON.stringify(this.movies));
+      }
     },
     toggleFavourite(movie: IMovie) {
-      if(movie.kinopoiskId) {
-        if (this.movies.some((item) => item.kinopoiskId === movie.kinopoiskId)) {
-          this.movies = this.movies.filter(
-            (el) => el.kinopoiskId !== movie.kinopoiskId
-          );
+      const key = movie.kinopoiskId ? 'kinopoiskId' : movie.filmId ? 'filmId' : null;
+    
+      if (key) {
+        const id = movie[key];
+    
+        if (this.movies.some((item) => item[key] === id)) {
+          this.movies = this.movies.filter((el) => el[key] !== id);
         } else {
           this.movies.unshift({ ...movie, isWatched: false });
         }
-      } else if( movie.filmId) {
-        if (this.movies.some((item) => item.filmId === movie.filmId)) {
-          this.movies = this.movies.filter(
-            (el) => el.filmId !== movie.filmId
-          );
-        } else {
-          this.movies.unshift({ ...movie, isWatched: false });
-        }
+    
+        localStorage.setItem('movies', JSON.stringify(this.movies));
       }
-      localStorage.setItem('movies', JSON.stringify(this.movies))
     },
   },
 });

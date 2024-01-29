@@ -1,6 +1,6 @@
 <template>
   <TheContainer>
-    <MovieSearch/>
+    <MovieSearch />
   </TheContainer>
 </template>
 
@@ -12,10 +12,8 @@ import MovieSearch from '@/components/MovieSearch.vue';
 
 
 <style lang="scss" scoped>
-
 .container {
   min-height: 100%;
   height: auto;
 }
-
 </style>

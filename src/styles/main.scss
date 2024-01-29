@@ -1,6 +1,6 @@
-@import 'fonts';
-@import 'common';
-@import 'reset';
+@import './fonts.scss';
+@import './common.scss';
+@import './reset.scss';
 
 .app-name {
   display: flex;

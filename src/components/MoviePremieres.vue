@@ -7,7 +7,7 @@
       <MovieCard v-if="activeMovie" :movie="activeMovie" :key="activeMovieId" is-special />
     </Transition>
 
-    <div class="slider-wrapper--side">
+    <div class="slider slider--side">
       <Swiper v-if="isSwiperInitialized" @active-index-change="getInformation"
         :slide-to-clicked-slide="swiperOptions.slideToClickedSlide" :centered-slides="swiperOptions.centeredSlides"
         :slides-per-view="swiperOptions.slidesPerView" :watch-overflow="swiperOptions.watchOverflow"
@@ -147,73 +147,76 @@ function getInformation(swiperInstance: SwiperInstance) {
   justify-content: center;
 }
 
-.slider-wrapper--side {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  right: 0px;
-  width: 200px;
-  height: 100vh;
-  padding-right: 8px;
+.slider {
+  &--side {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0px;
+    width: 200px;
+    height: 100vh;
+    padding-right: 8px;
 
-  @include break-xl {
-    top: auto;
-    bottom: 40px;
-    width: 100%;
-    height: 160px;
-    padding-right: 0;
-  }
-
-  @include break-md {
-    bottom: 16px;
-  }
-
-  .swiper {
-    height: 100%;
-
-    &-wrapper {
-      width: 160px;
-
-      @include break-xl {
-        width: 100%;
-      }
+    @include break-xl {
+      top: auto;
+      bottom: 40px;
+      width: 100%;
+      height: 160px;
+      padding-right: 0;
     }
 
-    &-slide {
-      width: 100%;
-      height: 234px;
-      background-color: $background-secondary;
-      transition: opacity 2s;
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0px 15px 15px 0px rgba(0, 0, 0, 0.2);
-      opacity: 0.3;
+    @include break-md {
+      bottom: 16px;
+    }
 
-      @include break-xl {
-        width: 112.05px;
-        height: 160px;
-      }
+    .swiper {
+      height: 100%;
 
-      img {
-        width: 100%;
-        height: 100%;
-      }
+      &-wrapper {
+        width: 160px;
 
-      &-prev, &-next {
-        opacity: 0.6;
-      }
-
-      &-active {
-        opacity: 1;
-
-        img {
-          opacity: 1;
+        @include break-xl {
+          width: 100%;
         }
       }
-    }
 
-    &-pagination-bullet {
-      background: $accent;
+      &-slide {
+        width: 100%;
+        height: 234px;
+        background-color: $background-secondary;
+        transition: opacity 2s;
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow: 0px 15px 15px 0px rgba(0, 0, 0, 0.2);
+        opacity: 0.3;
+
+        @include break-xl {
+          width: 112.05px;
+          height: 160px;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+
+        &-prev,
+        &-next {
+          opacity: 0.6;
+        }
+
+        &-active {
+          opacity: 1;
+
+          img {
+            opacity: 1;
+          }
+        }
+      }
+
+      &-pagination-bullet {
+        background: $accent;
+      }
     }
   }
 }

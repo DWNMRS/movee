@@ -1,5 +1,5 @@
 <template>
-  <div class="slider-wrapper--background">
+  <div v-if="imagePaths" class="slider slider--background">
     <div class="slider__slide" v-for="(path, index) of curentImages" :key="index"
       :class="{ active: index === currentSlideIndex }">
       <img width="1920" height="1080" :src="path" :alt="`кадр из фильма '${movieName}'`">
@@ -8,13 +8,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, onBeforeUnmount, ref, computed } from 'vue';
 
 const props = defineProps({
   imagePaths: {
     type: Array as () => string[],
     default: [],
-    required:false
+    required: false
   },
   movieName: {
     type: String,
@@ -23,14 +23,24 @@ const props = defineProps({
   }
 })
 
+let intervalId: ReturnType<typeof setInterval>;
+
 onMounted(() => {
   startAutoPlay()
 })
+onBeforeUnmount(() => {
+  stopAutoPlay();
+});
 
 const startAutoPlay = () => {
-  setInterval(() => {
+  intervalId = setInterval(() => {
+    console.log(123)
     nextSlide();
   }, 4000);
+};
+
+const stopAutoPlay = () => {
+  clearInterval(intervalId);
 };
 
 
@@ -55,35 +65,37 @@ const nextSlide = () => {
 </script>
 
 <style scoped lang="scss">
-.slider-wrapper--background {
-  overflow: hidden;
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.3;
-
-  @include break-md {
-    display: none;
-  }
-
-  .slider__slide {
+.slider {
+  &--background {
+    overflow: hidden;
     position: absolute;
+    z-index: 0;
+    top: 0;
+    right: 0;
     width: 100%;
     height: 100%;
-    opacity: 0;
-    transition: opacity 2.0s;
+    opacity: 0.3;
 
-    img {
-      object-fit: cover;
-      width: 100%;
-      height: 100%;
+    @include break-md {
+      display: none;
     }
 
-    &.active {
-      opacity: 1;
+    .slider__slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 2.0s;
+
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+
+      &.active {
+        opacity: 1;
+      }
     }
   }
 }

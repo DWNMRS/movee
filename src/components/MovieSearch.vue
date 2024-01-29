@@ -13,8 +13,6 @@
     <div v-else-if="searchStore.status == 'success'" class="movie-search__result">
       <MovieCard v-for="movie of searchStore.movies" :key="movie.filmId" :movie="movie" is-search />
     </div>
-
-
   </div>
 </template>
 
@@ -33,6 +31,7 @@ const searchMovie = ref('')
 
 <style scoped lang="scss">
 .movie-search {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;

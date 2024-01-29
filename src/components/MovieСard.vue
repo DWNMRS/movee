@@ -1,13 +1,14 @@
 <template>
   <div :class="classes">
     <div class="movie-card__img-wrapper">
-      <button class='movie-card__bookmark' @click="favouriteStore.toggleFavourite(movie)">
+      <button v-if="isImageLoaded" class='movie-card__bookmark' @click="favouriteStore.toggleFavourite(movie)">
         <AppIcon :class="['movie-card__bookmark-icon', { 'movie-card__bookmark-icon--active': bookmark === true }]"
           :width="32" :height="32" :name="EIconNames.Bookmark" />
       </button>
 
 
-      <img class="movie-card__img" :src="movie.posterUrl" :alt="movie.nameRu" @click="openMovieInfo" />
+      <img class="movie-card__img" :src="movie.posterUrlPreview" :alt="movie.nameRu" @load="imageLoaded"
+        @click="openMovieInfo" />
 
       <div v-if="!isSpecial && !isSearch" class="movie-card__buttons">
         <button :class="['movie-card__button', { 'movie-card__button--watched': movie.isWatched === true }]"
@@ -96,6 +97,8 @@ const bookmark = computed(() => {
   }
 })
 
+const isImageLoaded = ref<boolean>(false)
+
 const isHidden = ref<boolean>(true)
 
 function closeMovieInfo() {
@@ -108,6 +111,10 @@ function openMovieInfo() {
   } else {
     closeMovieInfo
   }
+}
+
+function imageLoaded() {
+  isImageLoaded.value = true
 }
 
 
@@ -306,10 +313,10 @@ function formatMinutes(duration: number | string) {
     &--visible {
       @include break-md {
         width: 100%;
-        height: 100%;
+        height: 100vh;
         display: flex;
         opacity: 0.95;
-        z-index: 2;
+        z-index: 10;
       }
     }
   }
@@ -400,11 +407,11 @@ function formatMinutes(duration: number | string) {
 
     @include break-lg {
       justify-content: center;
-      max-height: 480px;
     }
 
     @include break-md {
       width: 100%;
+      padding-top: 16px;
     }
 
     .movie-card {
